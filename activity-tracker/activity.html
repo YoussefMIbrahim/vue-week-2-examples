@@ -62,6 +62,16 @@
                         <input id="v1" class="form-check-input" type="radio" v-bind:value="digital" v-model="digitalTraditional">
                         <label class="form-check-label" for="v1">{{digital}}</label>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="note" class="form-label">Do you have any notes?</label>
+                        <input type="text" id="note" class="form-control" v-model="note">
+                    </div>
+
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="complete" v-model="complete">
+                        <label class="form-check-label" for="complete" >Complete</label>
+                    </div>
 
                     <div>
                         <!-- TODO v-on click event -->
@@ -86,13 +96,17 @@
                             <th>How long?</th>
                             <th>Type</th>
                             <th>Digital or traditional?</th>
+                            <th>Note</th>
+                            <th>Complete?</th>
                         </tr>
 
-                        <tr v-for="record in activityRecords">
+                        <tr v-for="record in activityRecords" v-bind:class = "'t-'+record.type" >
                             <td>{{record.when | shortDateFormat}}</td>
                             <td>{{record.howLong}}</td>
                             <td>{{record.type}}</td>
                             <td>{{record.digitalTraditional}}</td>
+                            <td>{{record.note | noteLimit}}</td>
+                            <td>{{record.complete}}</td>
                         </tr>
                         <!-- TODO display one table row for each activityRecord  -->
                     </table>
@@ -132,7 +146,9 @@
                 types : ['sketching','painting','drawing'],
                 digital: 'digital',
                 traditional: 'traditional',
-                errors : []
+                errors : [],
+                note : '',
+                complete : false
             },
             computed:{
                 whenLocal(){
@@ -171,7 +187,13 @@
                 },
                 shortDateFormat(date){
                     return new Intl.DateTimeFormat().format(date)
-                }
+                },
+                noteLimit(text){
+                    return text.slice(0,40);
+                },
+                // decimalPlaces: function (number, decimalPlaces) {
+                //     return number.toFixed(decimalPlaces)
+                // }
             },
             methods : {
                 submit(){
@@ -189,10 +211,14 @@
                             when: this.whenLocal,
                             howLong: this.howLong,
                             type: this.type,
-                            digitalTraditional: this.digitalTraditional
+                            digitalTraditional: this.digitalTraditional,
+                            note: this.note,
+                            complete: this.complete
 
                         };
+
                         this.activityRecords.push(record);
+
                         this.activityRecords.sort(function (r1,r2) {
                             return r2.when.getTime() - r1.when.getTime()
                         })

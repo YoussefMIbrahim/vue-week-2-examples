@@ -12,26 +12,28 @@
 <body>
     <div id="app">
 
-        <!-- TODO show error alert -->
+<!--        making a div that holds lis of all the erros in an array, and only show if the the array has a value-->
         <div class="alert alert-danger" v-show="errors.length > 0">
+<!--            using v-for to loop over the errors array and printing each error as a list item-->
             <li v-for="error in errors">{{error}}</li>
         </div>
-
+<!--        div with some bootstrap magic-->
         <div class="card add-student m-2 p-2">
             <h4 class="card-title">Add new student</h4>
 
             <div class="form-group">
                 <label for="name">Name</label>
-                <!-- TODO v-model -->
+<!--                attaching the input to the new student name property and trimming to get rid of useless spaces-->
                 <input id="name" class="form-control" v-model.trim = "newStudentName">
             </div>
+
             <div class="form-group">
                 <label for="starID">Star ID</label>
-                <!-- TODO v-model -->
+<!--                same thing as the above form group but with star id-->
                 <input id="starID" class="form-control" v-model.trim = "newStarID">
             </div>
 
-            <!-- TODO v-on:click event handler -->
+<!--            adding an on click function and .prevent to stop the browser from trying to submit to a server and reload-->
             <button class="btn btn-primary" v-on:click.prevent="addStudent">Add</button>
         </div>
 
@@ -39,18 +41,20 @@
             <h4 class="card-title">Students</h4>
             <div id="student-table">
                 <table class="table">
+<!--                    creating a table with these columns-->
                     <tr>
                         <th>Name</th>
                         <th>StarID</th>
                         <th>Present?</th>
                     </tr>
-
+<!--                    looping over the list of students and printing them -->
                     <tr v-for="student in students" v-bind:class="'present-'+student.present">
                         <td>{{student.name}}</td>
                         <td>{{student.starID}}</td>
+<!--                        adding a checkbox bound to present that calls the checked method when it changes-->
                         <td> <input type="checkbox" v-model="student.present" v-on:change="checked(student)"></td>
                     </tr>
-                    <!-- TODO create table rows
+                    <!--
                     Each row will have a checkbox, bound to the app data
                     When the checkbox is checked/unchecked, the student will be signed in/out 
                     Add styles so present and absent student rows have different styles
@@ -60,7 +64,7 @@
         </div>
 
         <transition name="fade">
-            <!-- TODO welcome or goodbye message -->
+<!--            adding a success alert message that greets or says goodbye to the most recent person if seeMessage is true-->
             <div class="alert alert-success" v-if="seeMessage">{{message}} {{mostRecentSignIn}}</div>
         </transition>
     </div>

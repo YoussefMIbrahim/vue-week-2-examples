@@ -2,3 +2,12 @@
     max-height: 250px;
     overflow: scroll;
 }
+.t-painting{
+    color: purple;
+}
+.t-sketching{
+    color: blue;
+}
+.t-drawing{
+    color: yellow;
+}
